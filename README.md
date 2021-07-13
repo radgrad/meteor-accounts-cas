@@ -1,4 +1,4 @@
-atoy40:accounts-cas
+Fork of atoy40:accounts-cas for RadGrad
 ===================
 
 CAS login support.
