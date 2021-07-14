@@ -1,4 +1,4 @@
-Fork of atoy40:accounts-cas for RadGrad
+Fork of atoy40:accounts-cas for RadGrad. Supports Meteor 2.3.2
 ===================
 
 CAS login support.
