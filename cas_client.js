@@ -41,6 +41,11 @@ Meteor.loginWithCas = function(options, callback) {
   if (options != null && options.redirectUrl != null)
     backURL = options.redirectUrl;
 
+  // CAM since we are using hash router we end up with '//' at the end of the backURL
+  if (backURL.endsWith('//')) {
+    backURL = backURL.substring(0, backURL.length - 1);
+  }
+
   var serviceURL = addParameterToURL(backURL, 'casToken='+credentialToken);
 
   var loginUrl = settings.loginUrl +
