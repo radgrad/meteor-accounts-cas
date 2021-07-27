@@ -1,4 +1,4 @@
-Fork of wekan:meteor-accounts-cas for RadGrad. Supports Meteor 2.3.2
+Modification of wekan:meteor-accounts-cas for RadGrad. Supports Meteor 2.3.2
 ===================
 
 CAS login support.
