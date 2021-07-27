@@ -47,10 +47,11 @@ Meteor.loginWithCas = function(options, callback) {
   }
 
   var serviceURL = addParameterToURL(backURL, 'casToken='+credentialToken);
-
+  // console.log(backURL, serviceURL);
   var loginUrl = settings.loginUrl +
     "?" + (settings.serviceParam || "service") + "=" +
     encodeURIComponent(serviceURL)
+  // console.log('loginUrl', loginUrl);
 
   if (settings.popup == false) {
     window.location = loginUrl;

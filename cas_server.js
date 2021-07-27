@@ -9,7 +9,7 @@ const xmlParser = Npm.require('xml2js');
 class CAS {
   constructor(options) {
     options = options || {};
-
+    // console.log('CAS', options)
     if (!options.validate_url) {
       throw new Error('Required CAS option `validateUrl` missing.');
     }
@@ -42,6 +42,7 @@ class CAS {
       }),
     };
 
+    // console.log('https.get', httparams);
     https.get(httparams, (res) => {
       res.on('error', (e) => {
         console.log('error' + e);
@@ -61,6 +62,7 @@ class CAS {
           console.log(error);
           callback(undefined, false);
         } else {
+          // console.log('response', response);
           xmlParser.parseString(response, (err, result) => {
             if (err) {
               console.log('Bad response format.');
@@ -148,10 +150,10 @@ const middleware = (req, res, next) => {
       next();
       return;
     }
-
+    // console.log(Meteor.absoluteUrl(), urlParsed.href);
     const serviceUrl = Meteor.absoluteUrl(urlParsed.href.replace(/^\//g, '')).replace(/([&?])ticket=[^&]+[&]?/g, '$1').replace(/[?&]+$/g, '');
     const redirectUrl = serviceUrl;//.replace(/([&?])casToken=[^&]+[&]?/g, '$1').replace(/[?&]+$/g, '');
-
+    // console.log('serviceUrl', serviceUrl);
     // get auth token
     const credentialToken = query.casToken;
     if (!credentialToken) {
