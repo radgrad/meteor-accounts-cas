@@ -1,6 +1,6 @@
 Package.describe({
   summary: "CAS support for accounts",
-  version: "0.0.1",
+  version: "0.0.2",
   name: "cammoo:accounts-cas",
   git: "https://github.com/radgrad/meteor-accounts-cas"
 });
@@ -19,7 +19,8 @@ Package.onUse(function(api) {
 });
 
 Npm.depends({
-  cas: "0.0.3"
+  xml2js: "0.4.17",
+  cas: "https://github.com/anrizal/node-cas/tarball/2baed530842e7a437f8f71b9346bcac8e84773cc"
 });
 
 Cordova.depends({
