@@ -1,6 +1,6 @@
 Package.describe({
   summary: "CAS support for accounts",
-  version: "0.0.3",
+  version: "0.0.4",
   name: "cammoo:accounts-cas",
   git: "https://github.com/radgrad/meteor-accounts-cas"
 });

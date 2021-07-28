@@ -254,7 +254,7 @@ Accounts.registerLoginHandler((options) => {
   if (attrs.debug) {
     console.log(`CAS response : ${JSON.stringify(result)}`);
   }
-  let user = Meteor.users.findOne({ 'services': { 'cas': { 'id': options.username } } });
+  let user = Meteor.users.findOne({ 'profile': { 'name': options.username } });
   if (! user) {
     if (attrs.debug) {
       console.log(`Creating user account ${JSON.stringify(options)}`);
