@@ -88,10 +88,7 @@ Meteor.loginWithCas = function(options, callback) {
       Accounts.callLoginMethod({
         methodArguments: [{ cas: { credentialToken: credentialToken } }],
         userCallback: err => {
-          // Fix redirect bug after login successfully
-          if (!err) {
-            window.location.href = '/';
-          }
+          callback(err);
         }
       });
     }

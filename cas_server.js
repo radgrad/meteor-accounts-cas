@@ -190,8 +190,8 @@ const casValidate = (req, ticket, token, service, callback) => {
       console.log(err);
     } else {
       if (status) {
-        console.log(`accounts-cas: user validated ${userData.id}
-          (${JSON.stringify(userData)})`);
+        console.log(`accounts-cas: user validated ${userData.id}`);
+          // (${JSON.stringify(userData)})`);
         _casCredentialTokens[token] = { id: userData.id };
         _userData = userData;
       } else {
