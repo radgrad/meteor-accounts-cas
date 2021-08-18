@@ -62,7 +62,7 @@ class CAS {
           console.log(error);
           callback(undefined, false);
         } else {
-          // console.log('response', response);
+          console.log('response', response);
           xmlParser.parseString(response, (err, result) => {
             if (err) {
               console.log('Bad response format.');
