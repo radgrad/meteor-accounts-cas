@@ -19,7 +19,7 @@ class CAS {
     }
 
     const cas_url = url.parse(options.validate_url);
-    if (cas_url.protocol != 'https:' ) {
+    if (cas_url.protocol != 'https:') {
       throw new Error('Only https CAS servers are supported.');
     } else if (!cas_url.hostname) {
       throw new Error('Option `validateUrl` must be a valid url like: https://example.com/cas/serviceValidate');
@@ -38,7 +38,7 @@ class CAS {
       port: this.port,
       path: url.format({
         pathname: this.validate_path,
-        query: {ticket: ticket, service: this.service},
+        query: { ticket: ticket, service: this.service },
       }),
     };
 
@@ -62,48 +62,22 @@ class CAS {
           console.log(error);
           callback(undefined, false);
         } else {
-          console.log('response', response);
+          // console.log('response', response);
           xmlParser.parseString(response, (err, result) => {
             if (err) {
               console.log('Bad response format.');
-              callback({message: 'Bad response format. XML could not parse it'});
+              callback({ message: 'Bad response format. XML could not parse it' });
             } else {
               if (result['cas:serviceResponse'] == null) {
                 console.log('Empty response.');
-                callback({message: 'Empty response.'});
+                callback({ message: 'Empty response.' });
               }
               if (result['cas:serviceResponse']['cas:authenticationSuccess']) {
                 const userData = {
                   id: result['cas:serviceResponse']['cas:authenticationSuccess'][0]['cas:user'][0].toLowerCase(),
                 };
-                const attributes = result['cas:serviceResponse']['cas:authenticationSuccess'][0]['cas:attributes'][0];
 
-                // Check allowed ldap groups if exist (array only)
-                // example cas settings : "allowedLdapGroups" : ["wekan", "admin"],
-                let findedGroup = false;
-                const allowedLdapGroups = Meteor.settings.cas.allowedLdapGroups || false;
-                for (const fieldName in attributes) {
-                  if (allowedLdapGroups && fieldName === 'cas:memberOf') {
-                    for (const groups in attributes[fieldName]) {
-                      const str = attributes[fieldName][groups];
-                      if (!Array.isArray(allowedLdapGroups)) {
-                        callback({message: 'Settings "allowedLdapGroups" must be an array'});
-                      }
-                      for (const allowedLdapGroup in allowedLdapGroups) {
-                        if (str.search(`cn=${allowedLdapGroups[allowedLdapGroup]}`) >= 0) {
-                          findedGroup = true;
-                        }
-                      }
-                    }
-                  }
-                  userData[fieldName] = attributes[fieldName][0];
-                }
-
-                if (allowedLdapGroups && !findedGroup) {
-                  callback({message: 'Group not finded.'}, false);
-                } else {
-                  callback(undefined, true, userData);
-                }
+                callback(undefined, true, userData);
               } else {
                 callback(undefined, false);
               }
@@ -114,6 +88,7 @@ class CAS {
     });
   }
 }
+
 ////// END OF CAS MODULE
 
 let _casCredentialTokens = {};
@@ -191,7 +166,7 @@ const casValidate = (req, ticket, token, service, callback) => {
     } else {
       if (status) {
         console.log(`accounts-cas: user validated ${userData.id}`);
-          // (${JSON.stringify(userData)})`);
+        // (${JSON.stringify(userData)})`);
         _casCredentialTokens[token] = { id: userData.id };
         _userData = userData;
       } else {
@@ -233,7 +208,7 @@ Accounts.registerLoginHandler((options) => {
       console.log(`CAS fields : id:"${uid}", firstname:"${fn}", lastname:"${ln}", mail:"${mail}"`);
     }
   }
-  const name = full ? _userData[full] : _userData[fn] + ' ' +  _userData[ln];
+  const name = full ? _userData[full] : _userData[fn] + ' ' + _userData[ln];
   // https://docs.meteor.com/api/accounts.html#Meteor-users
   options = {
     // _id: Meteor.userId()
@@ -245,8 +220,8 @@ Accounts.registerLoginHandler((options) => {
     profile: {
       // The profile is writable by the user by default.
       name: name,
-      fullname : name,
-      email : _userData[mail]
+      fullname: name,
+      email: _userData[mail]
     },
     active: true,
     globalRoles: ['user']
@@ -255,7 +230,7 @@ Accounts.registerLoginHandler((options) => {
     console.log(`CAS response : ${JSON.stringify(result)}`);
   }
   let user = Meteor.users.findOne({ 'profile': { 'name': options.username } });
-  if (! user) {
+  if (!user) {
     if (attrs.debug) {
       console.log(`Creating user account ${JSON.stringify(options)}`);
     }
@@ -285,14 +260,14 @@ const closePopup = (res) => {
   if (Meteor.settings.cas && Meteor.settings.cas.popup == false) {
     return;
   }
-  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.writeHead(200, { 'Content-Type': 'text/html' });
   const content = '<html><body><div id="popupCanBeClosed"></div></body></html>';
   res.end(content, 'utf-8');
 }
 
 const redirect = (res, whereTo) => {
-  res.writeHead(302, {'Location': whereTo});
-  const content = '<html><head><meta http-equiv="refresh" content="0; url='+whereTo+'" /></head><body>Redirection to <a href='+whereTo+'>'+whereTo+'</a></body></html>';
+  res.writeHead(302, { 'Location': whereTo });
+  const content = '<html><head><meta http-equiv="refresh" content="0; url=' + whereTo + '" /></head><body>Redirection to <a href=' + whereTo + '>' + whereTo + '</a></body></html>';
   res.end(content, 'utf-8');
   return
 }
